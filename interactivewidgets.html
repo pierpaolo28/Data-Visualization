@@ -13205,86 +13205,6 @@ div#notebook {
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">json</span>
-
-<span class="kn">from</span> <span class="nn">ipywidgets</span> <span class="k">import</span> <span class="n">IntSlider</span>
-<span class="kn">from</span> <span class="nn">ipywidgets.embed</span> <span class="k">import</span> <span class="n">embed_data</span>
-
-<span class="n">s1</span> <span class="o">=</span> <span class="n">IntSlider</span><span class="p">(</span><span class="nb">max</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
-<span class="n">s2</span> <span class="o">=</span> <span class="n">IntSlider</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
-<span class="n">data</span> <span class="o">=</span> <span class="n">embed_data</span><span class="p">(</span><span class="n">views</span><span class="o">=</span><span class="p">[</span><span class="n">s1</span><span class="p">,</span> <span class="n">s2</span><span class="p">])</span>
-
-<span class="n">html_template</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">&lt;html&gt;</span>
-<span class="s2">  &lt;head&gt;</span>
-
-<span class="s2">    &lt;title&gt;Widget export&lt;/title&gt;</span>
-
-<span class="s2">    &lt;!-- Load RequireJS, used by the IPywidgets for dependency management --&gt;</span>
-<span class="s2">    &lt;script </span>
-<span class="s2">      src=&quot;https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js&quot; </span>
-<span class="s2">      integrity=&quot;sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=&quot; </span>
-<span class="s2">      crossorigin=&quot;anonymous&quot;&gt;</span>
-<span class="s2">    &lt;/script&gt;</span>
-
-<span class="s2">    &lt;!-- Load IPywidgets bundle for embedding. --&gt;</span>
-<span class="s2">    &lt;script</span>
-<span class="s2">      data-jupyter-widgets-cdn=&quot;https://cdn.jsdelivr.net/npm/&quot;</span>
-<span class="s2">      src=&quot;https://unpkg.com/@jupyter-widgets/html-manager@*/dist/embed-amd.js&quot; </span>
-<span class="s2">      crossorigin=&quot;anonymous&quot;&gt;</span>
-<span class="s2">    &lt;/script&gt;</span>
-
-<span class="s2">    &lt;!-- The state of all the widget models on the page --&gt;</span>
-<span class="s2">    &lt;script type=&quot;application/vnd.jupyter.widget-state+json&quot;&gt;</span>
-<span class="s2">      </span><span class="si">{manager_state}</span><span class="s2"></span>
-<span class="s2">    &lt;/script&gt;</span>
-<span class="s2">  &lt;/head&gt;</span>
-
-<span class="s2">  &lt;body&gt;</span>
-
-<span class="s2">    &lt;h1&gt;Widget export&lt;/h1&gt;</span>
-
-<span class="s2">    &lt;div id=&quot;first-slider-widget&quot;&gt;</span>
-<span class="s2">      &lt;!-- This script tag will be replaced by the view&#39;s DOM tree --&gt;</span>
-<span class="s2">      &lt;script type=&quot;application/vnd.jupyter.widget-view+json&quot;&gt;</span>
-<span class="s2">        </span><span class="si">{widget_views[0]}</span><span class="s2"></span>
-<span class="s2">      &lt;/script&gt;</span>
-<span class="s2">    &lt;/div&gt;</span>
-
-<span class="s2">    &lt;hrule /&gt;</span>
-
-<span class="s2">    &lt;div id=&quot;second-slider-widget&quot;&gt;</span>
-<span class="s2">      &lt;!-- This script tag will be replaced by the view&#39;s DOM tree --&gt;</span>
-<span class="s2">      &lt;script type=&quot;application/vnd.jupyter.widget-view+json&quot;&gt;</span>
-<span class="s2">        </span><span class="si">{widget_views[1]}</span><span class="s2"></span>
-<span class="s2">      &lt;/script&gt;</span>
-<span class="s2">    &lt;/div&gt;</span>
-
-<span class="s2">  &lt;/body&gt;</span>
-<span class="s2">&lt;/html&gt;</span>
-<span class="s2">&quot;&quot;&quot;</span>
-
-<span class="n">manager_state</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;manager_state&#39;</span><span class="p">])</span>
-<span class="n">widget_views</span> <span class="o">=</span> <span class="p">[</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">view</span><span class="p">)</span> <span class="k">for</span> <span class="n">view</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;view_specs&#39;</span><span class="p">]]</span>
-<span class="n">rendered_template</span> <span class="o">=</span> <span class="n">html_template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">manager_state</span><span class="o">=</span><span class="n">manager_state</span><span class="p">,</span> <span class="n">widget_views</span><span class="o">=</span><span class="n">widget_views</span><span class="p">)</span>
-<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;export.html&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
-    <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">rendered_template</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-  </div>
-
-  
-
-  <div class="
-      cell border-box-sizing code_cell rendered">
-    <div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">friends</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">number</span><span class="p">):</span>
     <span class="k">return</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> has </span><span class="si">{}</span><span class="s1"> friends!&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">number</span><span class="p">)</span>
 </pre></div>
@@ -13341,97 +13261,94 @@ div#notebook {
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">ipywidgets</span> <span class="k">import</span> <span class="n">IntSlider</span>
-<span class="kn">from</span> <span class="nn">ipywidgets.embed</span> <span class="k">import</span> <span class="n">embed_minimal_html</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># from ipywidgets import IntSlider</span>
+<span class="c1"># from ipywidgets.embed import embed_minimal_html</span>
 
-<span class="n">slider</span> <span class="o">=</span> <span class="n">IntSlider</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
-<span class="n">embed_minimal_html</span><span class="p">(</span><span class="s1">&#39;export.html&#39;</span><span class="p">,</span> <span class="n">views</span><span class="o">=</span><span class="p">[</span><span class="n">slider</span><span class="p">],</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Widgets export&#39;</span><span class="p">)</span>
+<span class="c1"># slider = IntSlider(value=40)</span>
+<span class="c1"># embed_minimal_html(&#39;export.html&#39;, views=[slider], title=&#39;Widgets export&#39;)</span>
 </pre></div>
 
     </div>
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
+  </div>
 
+  
 
-<div class="output_area">
+  <div class="
+      cell border-box-sizing code_cell rendered">
+    <div class="input">
 
-    
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># import json</span>
 
-<div class="output_subarea output_text output_error">
-<pre>
-<span class="ansi-red-intense-fg ansi-bold">---------------------------------------------------------------------------</span>
-<span class="ansi-red-intense-fg ansi-bold">KeyError</span>                                  Traceback (most recent call last)
-<span class="ansi-green-intense-fg ansi-bold">~\Anaconda3\lib\sre_parse.py</span> in <span class="ansi-cyan-fg">parse_template</span><span class="ansi-blue-intense-fg ansi-bold">(source, pattern)</span>
-<span class="ansi-green-fg">   1020</span>                 <span class="ansi-green-intense-fg ansi-bold">try</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
-<span class="ansi-green-intense-fg ansi-bold">-&gt; 1021</span><span class="ansi-yellow-intense-fg ansi-bold">                     </span>this <span class="ansi-yellow-intense-fg ansi-bold">=</span> chr<span class="ansi-yellow-intense-fg ansi-bold">(</span>ESCAPES<span class="ansi-yellow-intense-fg ansi-bold">[</span>this<span class="ansi-yellow-intense-fg ansi-bold">]</span><span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-cyan-intense-fg ansi-bold">1</span><span class="ansi-yellow-intense-fg ansi-bold">]</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
-<span class="ansi-green-fg">   1022</span>                 <span class="ansi-green-intense-fg ansi-bold">except</span> KeyError<span class="ansi-yellow-intense-fg ansi-bold">:</span>
+<span class="c1"># from ipywidgets import IntSlider</span>
+<span class="c1"># from ipywidgets.embed import embed_data</span>
 
-<span class="ansi-red-intense-fg ansi-bold">KeyError</span>: &#39;\\u&#39;
+<span class="c1"># s1 = IntSlider(max=200, value=100)</span>
+<span class="c1"># s2 = IntSlider(value=40)</span>
+<span class="c1"># data = embed_data(views=[s1, s2])</span>
 
-During handling of the above exception, another exception occurred:
+<span class="c1"># html_template = &quot;&quot;&quot;</span>
+<span class="c1"># &lt;html&gt;</span>
+<span class="c1">#   &lt;head&gt;</span>
 
-<span class="ansi-red-intense-fg ansi-bold">error</span>                                     Traceback (most recent call last)
-<span class="ansi-green-intense-fg ansi-bold">&lt;ipython-input-26-b1b4cde5f044&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-intense-fg ansi-bold">()</span>
-<span class="ansi-green-fg">      3</span> 
-<span class="ansi-green-fg">      4</span> slider <span class="ansi-yellow-intense-fg ansi-bold">=</span> IntSlider<span class="ansi-yellow-intense-fg ansi-bold">(</span>value<span class="ansi-yellow-intense-fg ansi-bold">=</span><span class="ansi-cyan-intense-fg ansi-bold">40</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
-<span class="ansi-green-intense-fg ansi-bold">----&gt; 5</span><span class="ansi-yellow-intense-fg ansi-bold"> </span>embed_minimal_html<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-blue-intense-fg ansi-bold">&#39;export.html&#39;</span><span class="ansi-yellow-intense-fg ansi-bold">,</span> views<span class="ansi-yellow-intense-fg ansi-bold">=</span><span class="ansi-yellow-intense-fg ansi-bold">[</span>slider<span class="ansi-yellow-intense-fg ansi-bold">]</span><span class="ansi-yellow-intense-fg ansi-bold">,</span> title<span class="ansi-yellow-intense-fg ansi-bold">=</span><span class="ansi-blue-intense-fg ansi-bold">&#39;Widgets export&#39;</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="c1">#     &lt;title&gt;Widget export&lt;/title&gt;</span>
 
-<span class="ansi-green-intense-fg ansi-bold">~\Anaconda3\lib\site-packages\ipywidgets\embed.py</span> in <span class="ansi-cyan-fg">embed_minimal_html</span><span class="ansi-blue-intense-fg ansi-bold">(fp, views, title, template, **kwargs)</span>
-<span class="ansi-green-fg">    300</span>     <span class="ansi-yellow-intense-fg ansi-bold">{</span>embed_kwargs<span class="ansi-yellow-intense-fg ansi-bold">}</span>
-<span class="ansi-green-fg">    301</span>     &#34;&#34;&#34;
-<span class="ansi-green-intense-fg ansi-bold">--&gt; 302</span><span class="ansi-yellow-intense-fg ansi-bold">     </span>snippet <span class="ansi-yellow-intense-fg ansi-bold">=</span> embed_snippet<span class="ansi-yellow-intense-fg ansi-bold">(</span>views<span class="ansi-yellow-intense-fg ansi-bold">,</span> <span class="ansi-yellow-intense-fg ansi-bold">**</span>kwargs<span class="ansi-yellow-intense-fg ansi-bold">)</span>
-<span class="ansi-green-fg">    303</span> 
-<span class="ansi-green-fg">    304</span>     values = {
+<span class="c1">#     &lt;!-- Load RequireJS, used by the IPywidgets for dependency management --&gt;</span>
+<span class="c1">#     &lt;script </span>
+<span class="c1">#       src=&quot;https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js&quot; </span>
+<span class="c1">#       integrity=&quot;sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=&quot; </span>
+<span class="c1">#       crossorigin=&quot;anonymous&quot;&gt;</span>
+<span class="c1">#     &lt;/script&gt;</span>
 
-<span class="ansi-green-intense-fg ansi-bold">~\Anaconda3\lib\site-packages\ipywidgets\embed.py</span> in <span class="ansi-cyan-fg">embed_snippet</span><span class="ansi-blue-intense-fg ansi-bold">(views, drop_defaults, state, indent, embed_url, requirejs, cors)</span>
-<span class="ansi-green-fg">    266</span>     widget_views = u&#39;\n&#39;.join(
-<span class="ansi-green-fg">    267</span>         widget_view_template<span class="ansi-yellow-intense-fg ansi-bold">.</span>format<span class="ansi-yellow-intense-fg ansi-bold">(</span>view_spec<span class="ansi-yellow-intense-fg ansi-bold">=</span>escape_script<span class="ansi-yellow-intense-fg ansi-bold">(</span>json<span class="ansi-yellow-intense-fg ansi-bold">.</span>dumps<span class="ansi-yellow-intense-fg ansi-bold">(</span>view_spec<span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
-<span class="ansi-green-intense-fg ansi-bold">--&gt; 268</span><span class="ansi-yellow-intense-fg ansi-bold">         </span><span class="ansi-green-intense-fg ansi-bold">for</span> view_spec <span class="ansi-green-intense-fg ansi-bold">in</span> data<span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-blue-intense-fg ansi-bold">&#39;view_specs&#39;</span><span class="ansi-yellow-intense-fg ansi-bold">]</span>
-<span class="ansi-green-fg">    269</span>     )
-<span class="ansi-green-fg">    270</span> 
+<span class="c1">#     &lt;!-- Load IPywidgets bundle for embedding. --&gt;</span>
+<span class="c1">#     &lt;script</span>
+<span class="c1">#       data-jupyter-widgets-cdn=&quot;https://cdn.jsdelivr.net/npm/&quot;</span>
+<span class="c1">#       src=&quot;https://unpkg.com/@jupyter-widgets/html-manager@*/dist/embed-amd.js&quot; </span>
+<span class="c1">#       crossorigin=&quot;anonymous&quot;&gt;</span>
+<span class="c1">#     &lt;/script&gt;</span>
 
-<span class="ansi-green-intense-fg ansi-bold">~\Anaconda3\lib\site-packages\ipywidgets\embed.py</span> in <span class="ansi-cyan-fg">&lt;genexpr&gt;</span><span class="ansi-blue-intense-fg ansi-bold">(.0)</span>
-<span class="ansi-green-fg">    266</span>     widget_views = u&#39;\n&#39;.join(
-<span class="ansi-green-fg">    267</span>         widget_view_template<span class="ansi-yellow-intense-fg ansi-bold">.</span>format<span class="ansi-yellow-intense-fg ansi-bold">(</span>view_spec<span class="ansi-yellow-intense-fg ansi-bold">=</span>escape_script<span class="ansi-yellow-intense-fg ansi-bold">(</span>json<span class="ansi-yellow-intense-fg ansi-bold">.</span>dumps<span class="ansi-yellow-intense-fg ansi-bold">(</span>view_spec<span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
-<span class="ansi-green-intense-fg ansi-bold">--&gt; 268</span><span class="ansi-yellow-intense-fg ansi-bold">         </span><span class="ansi-green-intense-fg ansi-bold">for</span> view_spec <span class="ansi-green-intense-fg ansi-bold">in</span> data<span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-blue-intense-fg ansi-bold">&#39;view_specs&#39;</span><span class="ansi-yellow-intense-fg ansi-bold">]</span>
-<span class="ansi-green-fg">    269</span>     )
-<span class="ansi-green-fg">    270</span> 
+<span class="c1">#     &lt;!-- The state of all the widget models on the page --&gt;</span>
+<span class="c1">#     &lt;script type=&quot;application/vnd.jupyter.widget-state+json&quot;&gt;</span>
+<span class="c1">#       {manager_state}</span>
+<span class="c1">#     &lt;/script&gt;</span>
+<span class="c1">#   &lt;/head&gt;</span>
 
-<span class="ansi-green-intense-fg ansi-bold">~\Anaconda3\lib\site-packages\ipywidgets\embed.py</span> in <span class="ansi-cyan-fg">escape_script</span><span class="ansi-blue-intense-fg ansi-bold">(s)</span>
-<span class="ansi-green-fg">    239</span>     involving<span class="ansi-red-fg"> </span><span class="ansi-red-fg">`</span><span class="ansi-yellow-intense-fg ansi-bold">&lt;</span><span class="ansi-red-fg">`</span> <span class="ansi-green-intense-fg ansi-bold">is</span> readable<span class="ansi-yellow-intense-fg ansi-bold">.</span>
-<span class="ansi-green-fg">    240</span>     &#34;&#34;&#34;
-<span class="ansi-green-intense-fg ansi-bold">--&gt; 241</span><span class="ansi-yellow-intense-fg ansi-bold">     </span><span class="ansi-green-intense-fg ansi-bold">return</span> script_escape_re<span class="ansi-yellow-intense-fg ansi-bold">.</span>sub<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-blue-intense-fg ansi-bold">r&#39;\u003c\1&#39;</span><span class="ansi-yellow-intense-fg ansi-bold">,</span> s<span class="ansi-yellow-intense-fg ansi-bold">)</span>
-<span class="ansi-green-fg">    242</span> 
-<span class="ansi-green-fg">    243</span> <span class="ansi-yellow-intense-fg ansi-bold">@</span>doc_subst<span class="ansi-yellow-intense-fg ansi-bold">(</span>_doc_snippets<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="c1">#   &lt;body&gt;</span>
 
-<span class="ansi-green-intense-fg ansi-bold">~\Anaconda3\lib\re.py</span> in <span class="ansi-cyan-fg">_subx</span><span class="ansi-blue-intense-fg ansi-bold">(pattern, template)</span>
-<span class="ansi-green-fg">    307</span> <span class="ansi-green-intense-fg ansi-bold">def</span> _subx<span class="ansi-yellow-intense-fg ansi-bold">(</span>pattern<span class="ansi-yellow-intense-fg ansi-bold">,</span> template<span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
-<span class="ansi-green-fg">    308</span>     <span class="ansi-red-intense-fg ansi-bold"># internal: Pattern.sub/subn implementation helper</span>
-<span class="ansi-green-intense-fg ansi-bold">--&gt; 309</span><span class="ansi-yellow-intense-fg ansi-bold">     </span>template <span class="ansi-yellow-intense-fg ansi-bold">=</span> _compile_repl<span class="ansi-yellow-intense-fg ansi-bold">(</span>template<span class="ansi-yellow-intense-fg ansi-bold">,</span> pattern<span class="ansi-yellow-intense-fg ansi-bold">)</span>
-<span class="ansi-green-fg">    310</span>     <span class="ansi-green-intense-fg ansi-bold">if</span> <span class="ansi-green-intense-fg ansi-bold">not</span> template<span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-cyan-intense-fg ansi-bold">0</span><span class="ansi-yellow-intense-fg ansi-bold">]</span> <span class="ansi-green-intense-fg ansi-bold">and</span> len<span class="ansi-yellow-intense-fg ansi-bold">(</span>template<span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-cyan-intense-fg ansi-bold">1</span><span class="ansi-yellow-intense-fg ansi-bold">]</span><span class="ansi-yellow-intense-fg ansi-bold">)</span> <span class="ansi-yellow-intense-fg ansi-bold">==</span> <span class="ansi-cyan-intense-fg ansi-bold">1</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
-<span class="ansi-green-fg">    311</span>         <span class="ansi-red-intense-fg ansi-bold"># literal replacement</span>
+<span class="c1">#     &lt;h1&gt;Widget export&lt;/h1&gt;</span>
 
-<span class="ansi-green-intense-fg ansi-bold">~\Anaconda3\lib\re.py</span> in <span class="ansi-cyan-fg">_compile_repl</span><span class="ansi-blue-intense-fg ansi-bold">(repl, pattern)</span>
-<span class="ansi-green-fg">    298</span> <span class="ansi-green-intense-fg ansi-bold">def</span> _compile_repl<span class="ansi-yellow-intense-fg ansi-bold">(</span>repl<span class="ansi-yellow-intense-fg ansi-bold">,</span> pattern<span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
-<span class="ansi-green-fg">    299</span>     <span class="ansi-red-intense-fg ansi-bold"># internal: compile replacement pattern</span>
-<span class="ansi-green-intense-fg ansi-bold">--&gt; 300</span><span class="ansi-yellow-intense-fg ansi-bold">     </span><span class="ansi-green-intense-fg ansi-bold">return</span> sre_parse<span class="ansi-yellow-intense-fg ansi-bold">.</span>parse_template<span class="ansi-yellow-intense-fg ansi-bold">(</span>repl<span class="ansi-yellow-intense-fg ansi-bold">,</span> pattern<span class="ansi-yellow-intense-fg ansi-bold">)</span>
-<span class="ansi-green-fg">    301</span> 
-<span class="ansi-green-fg">    302</span> <span class="ansi-green-intense-fg ansi-bold">def</span> _expand<span class="ansi-yellow-intense-fg ansi-bold">(</span>pattern<span class="ansi-yellow-intense-fg ansi-bold">,</span> match<span class="ansi-yellow-intense-fg ansi-bold">,</span> template<span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
+<span class="c1">#     &lt;div id=&quot;first-slider-widget&quot;&gt;</span>
+<span class="c1">#       &lt;!-- This script tag will be replaced by the view&#39;s DOM tree --&gt;</span>
+<span class="c1">#       &lt;script type=&quot;application/vnd.jupyter.widget-view+json&quot;&gt;</span>
+<span class="c1">#         {widget_views[0]}</span>
+<span class="c1">#       &lt;/script&gt;</span>
+<span class="c1">#     &lt;/div&gt;</span>
 
-<span class="ansi-green-intense-fg ansi-bold">~\Anaconda3\lib\sre_parse.py</span> in <span class="ansi-cyan-fg">parse_template</span><span class="ansi-blue-intense-fg ansi-bold">(source, pattern)</span>
-<span class="ansi-green-fg">   1022</span>                 <span class="ansi-green-intense-fg ansi-bold">except</span> KeyError<span class="ansi-yellow-intense-fg ansi-bold">:</span>
-<span class="ansi-green-fg">   1023</span>                     <span class="ansi-green-intense-fg ansi-bold">if</span> c <span class="ansi-green-intense-fg ansi-bold">in</span> ASCIILETTERS<span class="ansi-yellow-intense-fg ansi-bold">:</span>
-<span class="ansi-green-intense-fg ansi-bold">-&gt; 1024</span><span class="ansi-yellow-intense-fg ansi-bold">                         </span><span class="ansi-green-intense-fg ansi-bold">raise</span> s<span class="ansi-yellow-intense-fg ansi-bold">.</span>error<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-blue-intense-fg ansi-bold">&#39;bad escape %s&#39;</span> <span class="ansi-yellow-intense-fg ansi-bold">%</span> this<span class="ansi-yellow-intense-fg ansi-bold">,</span> len<span class="ansi-yellow-intense-fg ansi-bold">(</span>this<span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
-<span class="ansi-green-fg">   1025</span>                 lappend<span class="ansi-yellow-intense-fg ansi-bold">(</span>this<span class="ansi-yellow-intense-fg ansi-bold">)</span>
-<span class="ansi-green-fg">   1026</span>         <span class="ansi-green-intense-fg ansi-bold">else</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
+<span class="c1">#     &lt;hrule /&gt;</span>
 
-<span class="ansi-red-intense-fg ansi-bold">error</span>: bad escape \u at position 0</pre>
-</div>
-</div>
+<span class="c1">#     &lt;div id=&quot;second-slider-widget&quot;&gt;</span>
+<span class="c1">#       &lt;!-- This script tag will be replaced by the view&#39;s DOM tree --&gt;</span>
+<span class="c1">#       &lt;script type=&quot;application/vnd.jupyter.widget-view+json&quot;&gt;</span>
+<span class="c1">#         {widget_views[1]}</span>
+<span class="c1">#       &lt;/script&gt;</span>
+<span class="c1">#     &lt;/div&gt;</span>
 
+<span class="c1">#   &lt;/body&gt;</span>
+<span class="c1"># &lt;/html&gt;</span>
+<span class="c1"># &quot;&quot;&quot;</span>
+
+<span class="c1"># manager_state = json.dumps(data[&#39;manager_state&#39;])</span>
+<span class="c1"># widget_views = [json.dumps(view) for view in data[&#39;view_specs&#39;]]</span>
+<span class="c1"># rendered_template = html_template.format(manager_state=manager_state, widget_views=widget_views)</span>
+<span class="c1"># with open(&#39;export.html&#39;, &#39;w&#39;) as fp:</span>
+<span class="c1">#     fp.write(rendered_template)</span>
+</pre></div>
+
+    </div>
 </div>
 </div>
 
@@ -13450,7 +13367,7 @@ During handling of the above exception, another exception occurred:
     }
 
     var interact = new window.NbInteract({
-      spec: 'pierpaolo28/Kaggle-Challenges/master',
+      spec: 'pierpaolo28/Interactive-Widgets/master',
       baseUrl: 'https://mybinder.org',
       provider: 'gh',
     })
