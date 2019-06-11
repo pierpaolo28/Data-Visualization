@@ -13153,6 +13153,12 @@ div#notebook {
 
 
 
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Interactive-Widgets-Examples-Using-ipywidgets-and-nbinteract">Interactive Widgets Examples Using ipywidgets and nbinteract<a class="anchor-link" href="#Interactive-Widgets-Examples-Using-ipywidgets-and-nbinteract">&#182;</a></h1>
+</div>
+</div>
+</div>
 
   
 
@@ -13163,8 +13169,121 @@ div#notebook {
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">ipywidgets</span> <span class="k">import</span> <span class="n">interact</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="k">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">import</span> <span class="nn">nbinteract</span> <span class="k">as</span> <span class="nn">nbi</span>
+</pre></div>
 
-<span class="k">def</span> <span class="nf">square</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    </div>
+</div>
+</div>
+
+  </div>
+
+  
+
+  <div class="
+      cell border-box-sizing code_cell rendered">
+    <div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+  </div>
+
+  
+
+  <div class="
+      cell border-box-sizing code_cell rendered">
+    <div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">interact</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">10</span><span class="p">);</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    
+
+
+
+  <div class="output_subarea output_widget_view ">
+    <button class="js-nbinteract-widget">
+      Loading widgets...
+    </button>
+  </div>
+
+</div>
+
+</div>
+</div>
+
+  </div>
+
+  
+
+  <div class="
+      cell border-box-sizing code_cell rendered">
+    <div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">interact</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    
+
+
+
+  <div class="output_subarea output_widget_view ">
+    <button class="js-nbinteract-widget">
+      Loading widgets...
+    </button>
+  </div>
+
+</div>
+
+</div>
+</div>
+
+  </div>
+
+  
+
+  <div class="
+      cell border-box-sizing code_cell rendered">
+    <div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">square</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span>
 
 <span class="n">w</span> <span class="o">=</span> <span class="n">interact</span><span class="p">(</span><span class="n">square</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">10</span><span class="p">);</span>
@@ -13261,14 +13380,44 @@ div#notebook {
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># from ipywidgets import IntSlider</span>
-<span class="c1"># from ipywidgets.embed import embed_minimal_html</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">matplotlib</span> <span class="k">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="n">rolls</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+<span class="n">averages</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">rolls</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">301</span><span class="p">)</span>
 
-<span class="c1"># slider = IntSlider(value=40)</span>
-<span class="c1"># embed_minimal_html(&#39;export.html&#39;, views=[slider], title=&#39;Widgets export&#39;)</span>
+<span class="k">def</span> <span class="nf">x_vals</span><span class="p">(</span><span class="n">num_rolls</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_rolls</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">y_vals</span><span class="p">(</span><span class="n">xs</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">averages</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">xs</span><span class="p">)]</span>
+
+<span class="k">def</span> <span class="nf">plotting_func</span><span class="p">(</span><span class="n">num_rolls</span><span class="p">):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_vals</span><span class="p">(</span><span class="n">num_rolls</span><span class="p">),</span> <span class="n">y_vals</span><span class="p">(</span><span class="n">x_vals</span><span class="p">(</span><span class="n">num_rolls</span><span class="p">)))</span>
+    
+<span class="n">interact</span><span class="p">(</span><span class="n">plotting_func</span><span class="p">,</span> <span class="n">num_rolls</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">100</span><span class="p">));</span>
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    
+
+
+
+  <div class="output_subarea output_widget_view ">
+    <button class="js-nbinteract-widget">
+      Loading widgets...
+    </button>
+  </div>
+
+</div>
+
 </div>
 </div>
 
@@ -13282,73 +13431,124 @@ div#notebook {
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># import json</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">x_vals</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
 
-<span class="c1"># from ipywidgets import IntSlider</span>
-<span class="c1"># from ipywidgets.embed import embed_data</span>
+<span class="k">def</span> <span class="nf">y_vals</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">xs</span> <span class="o">**</span> <span class="n">n</span>
 
-<span class="c1"># s1 = IntSlider(max=200, value=100)</span>
-<span class="c1"># s2 = IntSlider(value=40)</span>
-<span class="c1"># data = embed_data(views=[s1, s2])</span>
 
-<span class="c1"># html_template = &quot;&quot;&quot;</span>
-<span class="c1"># &lt;html&gt;</span>
-<span class="c1">#   &lt;head&gt;</span>
-
-<span class="c1">#     &lt;title&gt;Widget export&lt;/title&gt;</span>
-
-<span class="c1">#     &lt;!-- Load RequireJS, used by the IPywidgets for dependency management --&gt;</span>
-<span class="c1">#     &lt;script </span>
-<span class="c1">#       src=&quot;https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js&quot; </span>
-<span class="c1">#       integrity=&quot;sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=&quot; </span>
-<span class="c1">#       crossorigin=&quot;anonymous&quot;&gt;</span>
-<span class="c1">#     &lt;/script&gt;</span>
-
-<span class="c1">#     &lt;!-- Load IPywidgets bundle for embedding. --&gt;</span>
-<span class="c1">#     &lt;script</span>
-<span class="c1">#       data-jupyter-widgets-cdn=&quot;https://cdn.jsdelivr.net/npm/&quot;</span>
-<span class="c1">#       src=&quot;https://unpkg.com/@jupyter-widgets/html-manager@*/dist/embed-amd.js&quot; </span>
-<span class="c1">#       crossorigin=&quot;anonymous&quot;&gt;</span>
-<span class="c1">#     &lt;/script&gt;</span>
-
-<span class="c1">#     &lt;!-- The state of all the widget models on the page --&gt;</span>
-<span class="c1">#     &lt;script type=&quot;application/vnd.jupyter.widget-state+json&quot;&gt;</span>
-<span class="c1">#       {manager_state}</span>
-<span class="c1">#     &lt;/script&gt;</span>
-<span class="c1">#   &lt;/head&gt;</span>
-
-<span class="c1">#   &lt;body&gt;</span>
-
-<span class="c1">#     &lt;h1&gt;Widget export&lt;/h1&gt;</span>
-
-<span class="c1">#     &lt;div id=&quot;first-slider-widget&quot;&gt;</span>
-<span class="c1">#       &lt;!-- This script tag will be replaced by the view&#39;s DOM tree --&gt;</span>
-<span class="c1">#       &lt;script type=&quot;application/vnd.jupyter.widget-view+json&quot;&gt;</span>
-<span class="c1">#         {widget_views[0]}</span>
-<span class="c1">#       &lt;/script&gt;</span>
-<span class="c1">#     &lt;/div&gt;</span>
-
-<span class="c1">#     &lt;hrule /&gt;</span>
-
-<span class="c1">#     &lt;div id=&quot;second-slider-widget&quot;&gt;</span>
-<span class="c1">#       &lt;!-- This script tag will be replaced by the view&#39;s DOM tree --&gt;</span>
-<span class="c1">#       &lt;script type=&quot;application/vnd.jupyter.widget-view+json&quot;&gt;</span>
-<span class="c1">#         {widget_views[1]}</span>
-<span class="c1">#       &lt;/script&gt;</span>
-<span class="c1">#     &lt;/div&gt;</span>
-
-<span class="c1">#   &lt;/body&gt;</span>
-<span class="c1"># &lt;/html&gt;</span>
-<span class="c1"># &quot;&quot;&quot;</span>
-
-<span class="c1"># manager_state = json.dumps(data[&#39;manager_state&#39;])</span>
-<span class="c1"># widget_views = [json.dumps(view) for view in data[&#39;view_specs&#39;]]</span>
-<span class="c1"># rendered_template = html_template.format(manager_state=manager_state, widget_views=widget_views)</span>
-<span class="c1"># with open(&#39;export.html&#39;, &#39;w&#39;) as fp:</span>
-<span class="c1">#     fp.write(rendered_template)</span>
+<span class="n">nbi</span><span class="o">.</span><span class="n">line</span><span class="p">(</span><span class="n">x_vals</span><span class="p">,</span> <span class="n">y_vals</span><span class="p">,</span>
+         <span class="n">n</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    
+
+
+
+  <div class="output_subarea output_widget_view ">
+    <button class="js-nbinteract-widget">
+      Loading widgets...
+    </button>
+  </div>
+
+</div>
+
+</div>
+</div>
+
+  </div>
+
+  
+
+  <div class="nbinteract-right
+      cell border-box-sizing code_cell rendered">
+    <div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">matplotlib</span> <span class="k">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="c1"># nbi:right</span>
+<span class="nd">@interact</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+    
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    
+
+
+
+  <div class="output_subarea output_widget_view ">
+    <button class="js-nbinteract-widget">
+      Loading widgets...
+    </button>
+  </div>
+
+</div>
+
+</div>
+</div>
+
+  </div>
+
+  
+
+  <div class="nbinteract-left
+      cell border-box-sizing code_cell rendered">
+    <div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># nbi:left</span>
+<span class="nd">@interact</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">square</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    
+
+
+
+  <div class="output_subarea output_widget_view ">
+    <button class="js-nbinteract-widget">
+      Loading widgets...
+    </button>
+  </div>
+
+</div>
+
 </div>
 </div>
 

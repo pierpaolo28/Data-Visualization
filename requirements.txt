@@ -1,3 +1,6 @@
 numpy
 ipywidgets
 nbinteract
+matplotlib
+pyplot
+pandas
