@@ -13,3 +13,6 @@ Artificial Neural Network decision boundary during model training:
 
 Logistic Regression decision boundary during model Model Training:
 ![](./binary_classification_vizualizations/Logistic_Regression/Logistic_gif.gif)
+
+Artificial Neural Network Diagram Structure Genereator <br>
+![](./ann.png)
