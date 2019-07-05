@@ -1,4 +1,4 @@
-# Interactive-Graphs-and-Widgets
+# Data-Visualization
 ## Collection of interactive Jupiter Notebook graphs and widgets <br>
 
 This collection has been made possible thanks to: <br>
