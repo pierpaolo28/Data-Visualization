@@ -9,10 +9,10 @@ This collection has been made possible thanks to: <br>
 [StackOverFlow](https://stackoverflow.com/questions/29888233/how-to-visualize-a-neural-network) <br>
 
 Artificial Neural Network decision boundary during model training:
-![](./binary_classification_vizualizations/ANN/Keras_gif.gif)
+![](./Machine-Learning-GIFs/binary_classification_vizualizations/ANN/Keras_gif.gif)
 
 Logistic Regression decision boundary during model Model Training:
-![](./binary_classification_vizualizations/Logistic_Regression/Logistic_gif.gif)
+![](./Machine-Learning-GIFs/binary_classification_vizualizations/Logistic_Regression/Logistic_gif.gif)
 
 Artificial Neural Network Diagram Structure Generator:
-![](./ann.png)
+![](./Machine-Learning-GIFs/ann.png)
