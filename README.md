@@ -16,3 +16,15 @@ Logistic Regression decision boundary during model Model Training:
 
 Artificial Neural Network Diagram Structure Generator:
 ![](./Machine-Learning-GIFs/ann.png)
+
+Matplotlib Animation API:
+
+![](./Matplotlib-Animations/Gaussian/gauss.gif)
+
+![](./Matplotlib-Animations/sine_wave.gif)
+
+
+
+Celluloid:
+
+![](./Matplotlib-Animations/celluloid_minimal.gif)
