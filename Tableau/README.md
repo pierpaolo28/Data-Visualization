@@ -2,5 +2,5 @@
 
 Kaggle Titanic: Machine Learning from Disaster Simple Data Visualization using TABLEAU <br>
 
-![](Dashboard 1.png)
+![](Titanic.PNG)
 
