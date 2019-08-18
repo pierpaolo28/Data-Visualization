@@ -1,6 +1,6 @@
 # Dash Online Data Science Dashboard using Plotly
 
-## A Python project to analyse Facebook Stock Market performance and it's key metrics
+## A Python project to analyse Facebook Stock Market performance and its key metrics
 
 In this project I created an online dashboard (which can at the moment be tested using a local server) to interactively analyse and visualize two different datasets. <br>
 
