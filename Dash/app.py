@@ -2,6 +2,7 @@
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
+import dash_table
 import pandas as pd
 import plotly.graph_objs as go
 from dash.dependencies import Input, Output
@@ -11,7 +12,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import r2_score
 
-app = dash.Dash()
+app = dash.Dash('Dash')
 server = app.server
 
 df = pd.read_csv("stock_data.csv")
@@ -52,15 +53,40 @@ This dashboard is still under development:
 ''')  ,
     dcc.Tabs(id="tabs", children=[
         dcc.Tab(label='Stock Prices', children=[
-html.Div([html.H1("Facebook Stocks High vs Lows", style={'textAlign': 'center'}),
+html.Div([html.H1("Dataset Introduction", style={'textAlign': 'center'}),
+dash_table.DataTable(
+    id='table',
+    columns=[{"name": i, "id": i} for i in df.columns],
+    data=df.iloc[0:5,:].to_dict("rows"),
+),
+    html.H1("Facebook Stocks High vs Lows", style={'textAlign': 'center'}),
     dcc.Dropdown(id='my-dropdown',options=[{'label': 'Tesla', 'value': 'TSLA'},{'label': 'Apple', 'value': 'AAPL'},{'label': 'Facebook', 'value': 'FB'},{'label': 'Microsoft', 'value': 'MSFT'}],
         multi=True,value=['FB'],style={"display": "block", "margin-left": "auto", "margin-right": "auto", "width": "60%"}),
-    dcc.Graph(id='highlow'),
+    dcc.Graph(id='highlow'),  dash_table.DataTable(
+    id='table2',
+    columns=[{"name": i, "id": i} for i in df.describe().reset_index().columns],
+    data= df.describe().reset_index().to_dict("rows"),
+),
     html.H1("Facebook Market Volume", style={'textAlign': 'center'}),
     dcc.Dropdown(id='my-dropdown2',options=[{'label': 'Tesla', 'value': 'TSLA'},{'label': 'Apple', 'value': 'AAPL'},{'label': 'Facebook', 'value': 'FB'},{'label': 'Microsoft', 'value': 'MSFT'}],
         multi=True,value=['FB'],style={"display": "block", "margin-left": "auto", "margin-right": "auto", "width": "60%"}),
-    dcc.Graph(id='volume')
-        ], className="container"),
+    dcc.Graph(id='volume'),
+    html.H1("Scatter Analysis", style={'textAlign': 'center'}),
+    dcc.Dropdown(id='my-dropdown3',
+                 options=[{'label': 'Tesla', 'value': 'TSLA'}, {'label': 'Apple', 'value': 'AAPL'},
+                          {'label': 'Facebook', 'value': 'FB'}, {'label': 'Microsoft', 'value': 'MSFT'}],
+                 value= 'FB',
+                 style={"display": "block", "margin-left": "auto", "margin-right": "auto", "width": "45%"}),
+    dcc.Dropdown(id='my-dropdown4',
+                 options=[{'label': 'Tesla', 'value': 'TSLA'}, {'label': 'Apple', 'value': 'AAPL'},
+                          {'label': 'Facebook', 'value': 'FB'}, {'label': 'Microsoft', 'value': 'MSFT'}],
+                 value= 'AAPL',
+                 style={"display": "block", "margin-left": "auto", "margin-right": "auto", "width": "45%"}),
+  dcc.RadioItems(id="radiob", value= "High", labelStyle={'display': 'inline-block', 'padding': 10},
+                 options=[{'label': "High", 'value': "High"}, {'label': "Low", 'value': "Low"} , {'label': "Volume", 'value': "Volume"}],
+ style={'textAlign': "center", }),
+    dcc.Graph(id='scatter')
+], className="container"),
 ]),
 dcc.Tab(label='Performance Metrics', children=[
 html.H1("Facebook Metrics Distributions", style={"textAlign": "center"}),
@@ -73,6 +99,11 @@ html.H1("Facebook Metrics Distributions", style={"textAlign": "center"}),
                       ], className="row",
                      style={"padding": 50, "width": "60%", "margin-left": "auto", "margin-right": "auto"}),
             dcc.Graph(id='my-graph2'),
+dash_table.DataTable(
+    id='table3',
+    columns=[{"name": i, "id": i} for i in df.describe().reset_index().columns],
+    data= df.describe().reset_index().to_dict("rows"),
+),
             html.Div([html.H1("Paid vs Free Posts by Category")], style={'textAlign': "center", 'padding': 10}),
      html.Div([
          dcc.RadioItems(id="select-survival", value=str(1), labelStyle={'display': 'inline-block', 'padding': 10},
@@ -132,6 +163,24 @@ def update_graph(selected_dropdown_value):
                                                       {'step': 'all'}])},
                    'rangeslider': {'visible': True}, 'type': 'date'},yaxis={"title":"Transactions Volume"})}
     return figure
+
+
+@app.callback(Output('scatter', 'figure'),
+              [Input('my-dropdown3', 'value'), Input('my-dropdown4', 'value'), Input("radiob", "value"),])
+def update_graph(stock, stock2, radioval):
+    dropdown = {"TSLA": "Tesla", "AAPL": "Apple", "FB": "Facebook", "MSFT": "Microsoft", }
+    radio = {"High": "High Prices", "Low": "Low Prices", "Volume": "Market Volume", }
+    trace1 = []
+    trace1.append(go.Scatter(x=df[df["Stock"] == stock][radioval][-1000:], y=df[df["Stock"] == stock2][radioval][-1000:],
+                   mode='markers', opacity=0.7, textposition='bottom center'))
+    traces = [trace1]
+    data = [val for sublist in traces for val in sublist]
+    figure = {'data': data,
+        'layout': go.Layout(colorway=['#FF7400', '#FFF400', '#FF0056'],
+            height=600,title=f"{radio[radioval]} of {dropdown[stock]} vs {dropdown[stock2]} Over Time (1000 iterations)",
+            xaxis={"title": stock,}, yaxis={"title": stock2})}
+    return figure
+
 
 @app.callback(
     dash.dependencies.Output('my-graph2', 'figure'),
