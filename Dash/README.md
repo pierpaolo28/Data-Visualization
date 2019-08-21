@@ -12,6 +12,4 @@ Additionally, a Machine Learning approach to analyse these two datasets is propo
 
 This dashboard can be tested live using this [link.](https://salty-tor-65518.herokuapp.com/) Additionally, it is also possible to access this dashboard through my personal [WebSite.](https://pierpaolo28.github.io/)
 
-This project is still in progress, and I am planning to add more functionalities and designs to the final dashboard. 
-
 ![](dash.gif)
