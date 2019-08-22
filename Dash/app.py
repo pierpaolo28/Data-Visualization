@@ -115,7 +115,7 @@ dash_table.DataTable(
 dcc.Tab(label='Machine Learning', children=[
 html.Div([html.H1("Machine Learning", style={"textAlign": "center"}), html.H2("ARIMA Time Series Prediction", style={"textAlign": "left"}),
     dcc.Dropdown(id='my-dropdowntest',options=[{'label': 'Tesla', 'value': 'TSLA'},{'label': 'Apple', 'value': 'AAPL'},{'label': 'Facebook', 'value': 'FB'},{'label': 'Microsoft', 'value': 'MSFT'}],
-                value=['FB'],style={"display": "block", "margin-left": "auto", "margin-right": "auto", "width": "50%"}),
+                style={"display": "block", "margin-left": "auto", "margin-right": "auto", "width": "50%"}),
           dcc.RadioItems(id="radiopred", value="High", labelStyle={'display': 'inline-block', 'padding': 10},
                          options=[{'label': "High", 'value': "High"}, {'label': "Low", 'value': "Low"},
                                   {'label': "Volume", 'value': "Volume"}], style={'textAlign': "center", }),
@@ -251,21 +251,33 @@ def update_graph(stock , radioval):
     trace2 = []
     train_data = df[df['Stock'] == stock][-1000:][0:int(1000 * 0.8)]
     test_data = df[df['Stock'] == stock][-1000:][int(1000 * 0.8):]
-    trace1.append(go.Scatter(x=train_data['Date'],y=train_data[radioval], mode='lines',
-        opacity=0.7,name=f'Training Set',textposition='bottom center'))
-    trace2.append(go.Scatter(x=test_data['Date'],y=test_data[radioval],mode='lines',
-        opacity=0.6,name=f'Test Set',textposition='bottom center'))
-    traces = [trace1, trace2]
-    data = [val for sublist in traces for val in sublist]
-    figure = {'data': data,
-        'layout': go.Layout(colorway=["#5E0DAC", '#FF4F00', '#375CB1', '#FF7400', '#FFF400', '#FF0056'],
-            height=600,title=f"{radio[radioval]} Train-Test Sets for {dropdown[stock]}",
-            xaxis={"title":"Date",
-                   'rangeselector': {'buttons': list([{'count': 1, 'label': '1M', 'step': 'month', 'stepmode': 'backward'},
-                                                      {'count': 6, 'label': '6M', 'step': 'month', 'stepmode': 'backward'},
-                                                      {'step': 'all'}])},
-                   'rangeslider': {'visible': True}, 'type': 'date'},yaxis={"title":"Price (USD)"},     paper_bgcolor='rgba(0,0,0,0)',
-    plot_bgcolor='rgba(0,0,0,0)')}
+    if (stock == None):
+        trace1.append(
+            go.Scatter(x= [0], y= [0],
+                       mode='markers', opacity=0.7, textposition='bottom center'))
+        traces = [trace1]
+        data = [val for sublist in traces for val in sublist]
+        figure = {'data': data,
+                  'layout': go.Layout(colorway=['#FF7400', '#FFF400', '#FF0056'],
+                                      height=600, title=f"{radio[radioval]}",
+                                      paper_bgcolor='rgba(0,0,0,0)',
+                                      plot_bgcolor='rgba(0,0,0,0)')}
+    else:
+        trace1.append(go.Scatter(x=train_data['Date'],y=train_data[radioval], mode='lines',
+            opacity=0.7,name=f'Training Set',textposition='bottom center'))
+        trace2.append(go.Scatter(x=test_data['Date'],y=test_data[radioval],mode='lines',
+            opacity=0.6,name=f'Test Set',textposition='bottom center'))
+        traces = [trace1, trace2]
+        data = [val for sublist in traces for val in sublist]
+        figure = {'data': data,
+            'layout': go.Layout(colorway=["#5E0DAC", '#FF4F00', '#375CB1', '#FF7400', '#FFF400', '#FF0056'],
+                height=600,title=f"{radio[radioval]} Train-Test Sets for {dropdown[stock]}",
+                xaxis={"title":"Date",
+                       'rangeselector': {'buttons': list([{'count': 1, 'label': '1M', 'step': 'month', 'stepmode': 'backward'},
+                                                          {'count': 6, 'label': '6M', 'step': 'month', 'stepmode': 'backward'},
+                                                          {'step': 'all'}])},
+                       'rangeslider': {'visible': True}, 'type': 'date'},yaxis={"title":"Price (USD)"},     paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)')}
     return figure
 
 
@@ -274,41 +286,52 @@ def update_graph(stock , radioval):
 def update_graph(stock, radioval):
     dropdown = {"TSLA": "Tesla", "AAPL": "Apple", "FB": "Facebook", "MSFT": "Microsoft", }
     radio = {"High": "High Prices", "Low": "Low Prices", "Volume": "Market Volume", }
-    test_data = df[df['Stock'] == stock][-1000:][int(1000 * 0.8):]
-    train_data = df[df['Stock'] == stock][-1000:][0:int(1000 * 0.8)]
-    train_ar = train_data[radioval].values
-    test_ar = test_data[radioval].values
-    history = [x for x in train_ar]
-    predictions = list()
-    for t in range(len(test_ar)):
-        model = ARIMA(history, order=(3, 1, 0))
-        model_fit = model.fit(disp=0)
-        output = model_fit.forecast()
-        yhat = output[0]
-        predictions.append(yhat)
-        obs = test_ar[t]
-        history.append(obs)
-    error = mean_squared_error(test_ar, predictions)
     dropdown = {"TSLA": "Tesla","AAPL": "Apple","FB": "Facebook","MSFT": "Microsoft",}
     trace1 = []
     trace2 = []
-    trace1.append(go.Scatter(x=test_data['Date'],y=test_data['High'],mode='lines',
-        opacity=0.6,name=f'Actual Series',textposition='bottom center'))
-    trace2.append(go.Scatter(x=test_data['Date'],y= np.concatenate(predictions).ravel(), mode='lines',
-        opacity=0.7,name=f'Predicted Series (MSE: {error})',textposition='bottom center'))
-    traces = [trace1, trace2]
-    data = [val for sublist in traces for val in sublist]
-    figure = {'data': data,
-        'layout': go.Layout(colorway=["#5E0DAC", '#FF4F00', '#375CB1', '#FF7400', '#FFF400', '#FF0056'],
-            height=600,title=f"{radio[radioval]} ARIMA Predictions vs Actual for {dropdown[stock]}",
-            xaxis={"title":"Date",
-                   'rangeselector': {'buttons': list([{'count': 1, 'label': '1M', 'step': 'month', 'stepmode': 'backward'},
-                                                      {'count': 6, 'label': '6M', 'step': 'month', 'stepmode': 'backward'},
-                                                      {'step': 'all'}])},
-                   'rangeslider': {'visible': True}, 'type': 'date'},yaxis={"title":"Price (USD)"},     paper_bgcolor='rgba(0,0,0,0)',
-    plot_bgcolor='rgba(0,0,0,0)')}
+    if (stock == None):
+        trace1.append(
+            go.Scatter(x= [0], y= [0],
+                       mode='markers', opacity=0.7, textposition='bottom center'))
+        traces = [trace1]
+        data = [val for sublist in traces for val in sublist]
+        figure = {'data': data,
+                  'layout': go.Layout(colorway=['#FF7400', '#FFF400', '#FF0056'],
+                                      height=600, title=f"{radio[radioval]}",
+                                      paper_bgcolor='rgba(0,0,0,0)',
+                                      plot_bgcolor='rgba(0,0,0,0)')}
+    else:
+        test_data = df[df['Stock'] == stock][-1000:][int(1000 * 0.8):]
+        train_data = df[df['Stock'] == stock][-1000:][0:int(1000 * 0.8)]
+        train_ar = train_data[radioval].values
+        test_ar = test_data[radioval].values
+        history = [x for x in train_ar]
+        predictions = list()
+        for t in range(len(test_ar)):
+            model = ARIMA(history, order=(3, 1, 0))
+            model_fit = model.fit(disp=0)
+            output = model_fit.forecast()
+            yhat = output[0]
+            predictions.append(yhat)
+            obs = test_ar[t]
+            history.append(obs)
+        error = mean_squared_error(test_ar, predictions)
+        trace1.append(go.Scatter(x=test_data['Date'],y=test_data['High'],mode='lines',
+            opacity=0.6,name=f'Actual Series',textposition='bottom center'))
+        trace2.append(go.Scatter(x=test_data['Date'],y= np.concatenate(predictions).ravel(), mode='lines',
+            opacity=0.7,name=f'Predicted Series (MSE: {error})',textposition='bottom center'))
+        traces = [trace1, trace2]
+        data = [val for sublist in traces for val in sublist]
+        figure = {'data': data,
+            'layout': go.Layout(colorway=["#5E0DAC", '#FF4F00', '#375CB1', '#FF7400', '#FFF400', '#FF0056'],
+                height=600,title=f"{radio[radioval]} ARIMA Predictions vs Actual for {dropdown[stock]}",
+                xaxis={"title":"Date",
+                       'rangeselector': {'buttons': list([{'count': 1, 'label': '1M', 'step': 'month', 'stepmode': 'backward'},
+                                                          {'count': 6, 'label': '6M', 'step': 'month', 'stepmode': 'backward'},
+                                                          {'step': 'all'}])},
+                       'rangeslider': {'visible': True}, 'type': 'date'},yaxis={"title":"Price (USD)"},     paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)')}
     return figure
-
 
 
 if __name__ == '__main__':
