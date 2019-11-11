@@ -1,13 +1,5 @@
-# Streamlit
-## Using Streamlit to visualize online Feature Engineering techniques <br>
+# Streamlit Web App
 
-Online Dashboard created using Streamlit. In this example, I used Streamlit to analyse online the [Kaggle Mushrooms dataset](https://www.kaggle.com/pierpaolo28/feature-engineering). In particular, I focused on analysing how Feature Engineering techniques can be used to reduce the dimensionality of this dataset while preserving most of the embedded variance. Some of the techniques considered are:
+Creation and deployment of an interactive WebApp for Business Insights using Streamlit. A live version of this project is available on [my personal website]( https://pierpaolo28.github.io/work.html) at this [link](https://sleepy-hamlet-89494.herokuapp.com/)
 
-- PCA 
-- t-SNE 
-- LDA 
-- Locally Linear Embedding 
-- ICA (Independent Component Analysis) 
-- Autoencoders
-
-![](streamlit.gif)
+![](StreamlitApp.gif)
