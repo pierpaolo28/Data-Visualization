@@ -8,6 +8,7 @@ from matplotlib.colors import LinearSegmentedColormap
 import matplotlib
 matplotlib.use('Agg')
 from matplotlib import pyplot as plt
+from matplotlib.pyplot import figure
 
 dataset_len = 180
 dlen = int(dataset_len/2)
@@ -42,12 +43,12 @@ st.write('Welcome to our business dashboard, here you can analyse how'
 ads = st.text_input('Advertisement Spent')
 brand = st.text_input('Brand Equity Score')
 market = st.text_input('Market Share')
+ads = list(map(float, ads.split()))
+brand = list(map(float, brand.split()))
+market = list(map(float, market.split()))
 
 if (ads and brand and market) and len(ads)==len(brand)==len(market):
     st.write("Thanks for adding input source")
-    ads = list(map(float, ads.split()))
-    brand = list(map(float, brand.split()))
-    market = list(map(float, market.split()))
     X_Test = np.array([ads, brand, market])
     X_Test = np.array(list(map(list, zip(*X_Test))))
 else:
@@ -55,7 +56,19 @@ else:
 
 st.write(df.head())
 
+st.subheader('Feature Importance')
+figure(num=None, figsize=(20, 22), dpi=80, facecolor='w', edgecolor='k')
+feat_importances = pd.Series(regr.feature_importances_, index= df.drop(['Sales'], axis = 1).columns)
+feat_importances.nlargest(10).plot(kind='barh')
+plt.xticks(size = 15)
+plt.yticks(size = 15)
+st.pyplot()
+
+#st.write(feat_importances.nlargest(10).index[0])
+
 pred = regr.predict(X_Test)
+
+st.subheader('Bayesian Belief Network')
 
 df2 = pd.DataFrame({'from': ['Advertisement \nSpent',  'Brand \nEquity \nScore',
                              'Market \nShare'],
@@ -87,10 +100,11 @@ colours = LinearSegmentedColormap('GYR', cdict)
 fixed_positions = {'Advertisement \nSpent' : (0, 0),
                    'Brand \nEquity \nScore' : (-1, 2),
                    'Market \nShare' : (1, 2),
-                   'Sales': (0, 1.2)}  # dict with two of the positions set
+                   'Sales': (0, 1.2)}
 fixed_nodes = fixed_positions.keys()
 pos = nx.spring_layout(G, pos=fixed_positions, fixed=fixed_nodes)
 a = [int(np.mean(X_Test[:, 0])), int(np.mean(pred)), int(np.mean(X_Test[:, 1])), int(np.mean(X_Test[:, 2]))]
+
 
 #st.write("Prediction Accuracy: ", regr.score(X_Test, Y_Test))
 fig = plt.figure()
