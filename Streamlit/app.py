@@ -9,6 +9,10 @@ import matplotlib
 matplotlib.use('Agg')
 from matplotlib import pyplot as plt
 from matplotlib.pyplot import figure
+import lime.lime_tabular
+import lime
+import shap
+
 
 dataset_len = 180
 dlen = int(dataset_len/2)
@@ -27,7 +31,7 @@ Y = pd.concat([Y_1, Y_2]).reset_index(drop=True)
 df = pd.concat([X_1, X_2, X_3, Y], axis=1)
 df.columns = ['Advertisement Spent', 'Brand Equity Score', 'Market Share', 'Sales']
 
-X = df.drop(['Sales'], axis = 1).values
+X = df.drop(['Sales'], axis = 1) #.values
 Y = df['Sales']
 
 X_Train, X_Test, Y_Train, Y_Test = train_test_split(X, Y, test_size = 0.30, random_state = 101)
@@ -50,7 +54,9 @@ market = list(map(float, market.split()))
 if (ads and brand and market) and len(ads)==len(brand)==len(market):
     st.write("Thanks for adding input source")
     X_Test = np.array([ads, brand, market])
-    X_Test = np.array(list(map(list, zip(*X_Test))))
+    # X_Test = np.array(list(map(list, zip(*X_Test))))
+    X_Test = {'Advertisement Spent': ads, 'Brand Equity Score': brand, 'Market Share': market}
+    X_Test = pd.DataFrame(data=X_Test)
 else:
     X_Test = X_Test
 
@@ -68,7 +74,61 @@ st.pyplot()
 
 pred = regr.predict(X_Test)
 
+st.subheader('Shapley (SHAP) Values')
+explainerRF = shap.TreeExplainer(regr)
+shap_values_RF_test = explainerRF.shap_values(X_Test)
+shap_values_RF_train = explainerRF.shap_values(X_Train)
+df_shap_RF_train = pd.DataFrame(shap_values_RF_train, columns=X_Train.columns.values)
+
+# if a feature has 10 or less unique values then treat it as categorical
+categorical_features = np.argwhere(np.array([len(set(X_Train.values[:, x]))
+                                             for x in range(X_Train.values.shape[1])]) <= 10).flatten()
+
+# LIME has one explainer for all models
+explainer = lime.lime_tabular.LimeTabularExplainer(X_Train.values,
+                                                   feature_names=X_Train.columns.values.tolist(),
+                                                   class_names=['price'],
+                                                   categorical_features=categorical_features,
+                                                   verbose=True, mode='regression')
+
+
+# j will be the record we explain
+j = 0
+# initialize js for SHAP
+if X_Test.shape[0] >= 3:
+    lim = 3
+else:
+    lim = X_Test.shape[0]
+
+for j in range(0, lim):
+    shap.initjs()
+    num = X.columns.values
+    st.write(num[j])
+    shap.force_plot(explainerRF.expected_value, shap_values_RF_test[j], X_Test.iloc[[j]], matplotlib=True)
+    # plt.gcf().set_size_inches(14, 14)
+    st.pyplot()
+
+shp_plt = shap.dependence_plot("Advertisement Spent", shap_values_RF_train, X_Train)
+st.pyplot()
+
+shp_plt = shap.dependence_plot("Brand Equity Score", shap_values_RF_train, X_Train)
+st.pyplot()
+
+shp_plt = shap.dependence_plot("Market Share", shap_values_RF_train, X_Train)
+st.pyplot()
+
+st.subheader('Local Surrogate (LIME)')
+for j in range(0, lim):
+    num = X.columns.values
+    exp= explainer.explain_instance(X_Test.values[j], regr.predict, num_features=5)
+    exp.as_pyplot_figure()
+    plt.gcf().set_size_inches(11, 7)
+    plt.title(num[j])
+    st.pyplot()
+
 st.subheader('Bayesian Belief Network')
+X_Test = X_Test.values
+X_Train = X_Train.values
 
 df2 = pd.DataFrame({'from': ['Advertisement \nSpent',  'Brand \nEquity \nScore',
                              'Market \nShare'],

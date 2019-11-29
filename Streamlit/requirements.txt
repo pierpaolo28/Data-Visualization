@@ -4,3 +4,6 @@ sklearn
 streamlit
 networkx
 matplotlib
+lime
+shap
+ipython
