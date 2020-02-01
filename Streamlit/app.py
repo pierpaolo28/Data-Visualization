@@ -117,14 +117,14 @@ st.pyplot()
 shp_plt = shap.dependence_plot("Market Share", shap_values_RF_train, X_Train)
 st.pyplot()
 
-st.subheader('Local Surrogate (LIME)')
-for j in range(0, lim):
-    num = X.columns.values
-    exp= explainer.explain_instance(X_Test.values[j], regr.predict, num_features=5)
-    exp.as_pyplot_figure()
-    plt.gcf().set_size_inches(11, 7)
-    plt.title(num[j])
-    st.pyplot()
+# st.subheader('Local Surrogate (LIME)')
+# for j in range(0, lim):
+#     num = X.columns.values
+#     exp= explainer.explain_instance(X_Test.values[j], regr.predict, num_features=5)
+#     exp.as_pyplot_figure()
+#     plt.gcf().set_size_inches(11, 7)
+#     plt.title(num[j])
+#     st.pyplot()
 
 st.subheader('Bayesian Belief Network')
 X_Test = X_Test.values
