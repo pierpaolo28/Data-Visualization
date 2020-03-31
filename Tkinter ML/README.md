@@ -8,7 +8,7 @@ pyinstaller main.spec
 
  
 
-![](demo.PNG)
+![](VideoDemo.GIF)
 
 In case you can be interested in contributing to this project, a requirements.txt is available in order to install the required dependencies.
 
