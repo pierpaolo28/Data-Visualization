@@ -6,13 +6,10 @@ GUI based machine learning classifier created using Tkinter and Tensorflow VGG16
 pyinstaller main.spec
 ```
 
- 
-
-![](VideoDemo.GIF)
+![](demo.PNG)
 
 In case you can be interested in contributing to this project, a requirements.txt is available in order to install the required dependencies.
 
 Additionally, an alternative version of the image classifier using Pytorch Alexnet pretrained model is available in the PyTorch folder.
 
 If you are interested in trying yourself this application, please fell free to download and install the Image Classifier.exe executable on your Windows machine.
-
