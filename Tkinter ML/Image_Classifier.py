@@ -58,7 +58,6 @@ chose_image = tk.Button(root, text='Choose Image',
                         fg="white", bg="grey", command=load_img)
 chose_image.pack(side=tk.LEFT)
 
-
 class_image = tk.Button(root, text='Classify Image',
                         padx=35, pady=10,
                         fg="white", bg="grey", command=classify)
