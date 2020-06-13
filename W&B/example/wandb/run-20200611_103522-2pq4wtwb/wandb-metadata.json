@@ -1,0 +1,23 @@
+{
+    "root": "C:/Users/hp/Desktop/AI/Data-Visualization/W&B/tutorial",
+    "program": "tutorial.py",
+    "git": {
+        "remote": "http://github.com/wandb/tutorial",
+        "commit": "9807c0d23406a8ef7ab1aac58bdc3bc6323e43cf"
+    },
+    "email": "ppi1u16@soton.ac.uk",
+    "startedAt": "2020-06-11T10:35:23.130023",
+    "host": "LAPTOP-3OPT8QLR",
+    "username": "hp",
+    "executable": "C:\\Users\\hp\\Anaconda3\\python.exe",
+    "os": "Windows-10-10.0.18362-SP0",
+    "python": "3.7.3",
+    "cpu_count": 4,
+    "args": [],
+    "state": "finished",
+    "jobType": null,
+    "mode": "run",
+    "project": "tutorial",
+    "heartbeatAt": "2020-06-11T10:36:56.137095",
+    "exitcode": 0
+}
