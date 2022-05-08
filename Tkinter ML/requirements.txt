@@ -12,7 +12,7 @@ Markdown==3.2.1
 numpy==1.18.2
 pefile==2019.4.18
 Pillow==7.0.0
-protobuf==3.6.0
+protobuf==3.15.0
 PyInstaller==3.6
 pywin32-ctypes==0.2.0
 six==1.14.0
