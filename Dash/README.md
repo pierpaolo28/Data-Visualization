@@ -10,7 +10,7 @@ The second dataset used to analyse Facebook Performance Metrics (eg. likes per p
 
 Additionally, a Machine Learning approach to analyse these two datasets is proposed.
 
-This dashboard can be tested live using this [link.](https://salty-tor-65518.herokuapp.com/) Additionally, it is also possible to access this dashboard through my personal [WebSite.](https://pierpaolo28.github.io/) <br>
+This dashboard can be tested live using this [link.](https://pierpaolo28.github.io/Projects/dash_dashboard.html) Additionally, it is also possible to access this dashboard through my personal [WebSite.](https://pierpaolo28.github.io/) <br>
 
 If you are looking for an written explaination on how to create this dashboard, I wrote a step by step guide on [Towards Data Science.](https://towardsdatascience.com/interactive-dashboards-for-data-science-51aa038279e5) <br>
 
